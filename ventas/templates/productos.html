@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+</head>
+<body>
+    <h1>Productos Disponibles</h1>
+    {% for producto in productos %}
+    <li>
+      <h2>{{ producto.titulo }}</h2>
+      <p>{{ producto.categoria }}</p>
+      <p>{{ producto.descripcion }}</p>
+      <p><strong>Costo:</strong> ${{ producto.costo }}</p>
+      <a href="{% url 'agregar_al_carrito' producto.id %}">Agregar al carrito</a>
+    </li>
+  {% endfor %}
+    </ul>
+    <a href="{% url 'ver_carrito' %}">Ver carrito</a>
+</body>
+</html>
+
