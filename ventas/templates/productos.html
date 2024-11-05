@@ -1,23 +1,86 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es"python manage.py collectstatic>
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
+    <title>Carteras Farias - Bienvenida y Productos</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
 </head>
-<body>
-    <h1>Productos Disponibles</h1>
-    {% for producto in productos %}
-    <li>
-      <h2>{{ producto.titulo }}</h2>
-      <p>{{ producto.categoria }}</p>
-      <p>{{ producto.descripcion }}</p>
-      <p><strong>Costo:</strong> ${{ producto.costo }}</p>
-      <a href="{% url 'agregar_al_carrito' producto.id %}">Agregar al carrito</a>
-    </li>
-  {% endfor %}
+
+<header>
+  <nav class="navbar">
+    <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo Farias">
+    </div>
+    <ul class="menu">
+        <li><a href="#">Bienvenida</a></li>
+        <li><a href="#">Acerca de</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contacto</a></li>
+        <li><a href="#">Políticas de la tienda</a></li>
+        <li><a href="#">Tienda</a></li>
     </ul>
-    <a href="{% url 'ver_carrito' %}">Ver carrito</a>
+    <div class="iconos">
+        <a href="{% url 'ver_carrito' %}">
+            <i class="fas fa-shopping-cart"></i>
+            {% if total_items > 0 %}
+                <span class="cart-count">{{ total_items }}</span>
+            {% else %}
+                <span class="cart-count">0</span>
+            {% endif %}
+        </a>
+      <a href="#"><i class="fas fa-user"></i></a>
+  </div>
+  
+  </div>
+  
+    
+  </nav>
+</header>
+
+<body>
+    <!-- Sección de bienvenida -->
+    <div class="container">
+        <div class="left">
+            <img src="{% static 'img/cartera-imagen.jpg' %}" alt="Cartera Farias" class="cartera-imagen">
+        </div>
+        <div class="right">
+            <h1>Bienvenidos a tienda de Carteras Farias</h1>
+            <p>Lleva tu experiencia de compra a otro nivel en Carteras Farias. Con una selección inigualable de productos de calidad y un servicio de atención al cliente excepcional, siempre haremos todo lo posible para que encuentres exactamente lo que tienes en mente.</p>
+            <p>Echa un vistazo a lo que tenemos disponible.</p>
+        </div>
+    </div>
+
+    <!-- Sección de productos -->
+    <h2>Productos Disponibles</h2>
+    <div class="productos">
+        {% for producto in productos %}
+        <div class="producto">
+            <h3>{{ producto.titulo }}</h3>
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.titulo }}" class="producto-imagen">
+            <p>{{ producto.descripcion }}</p>
+            <p><strong>Costo: </strong>${{ producto.costo }}</p>
+            <p><strong>Stock disponible: </strong>{{ producto.stock }}</p>
+            {% if producto.stock == 0 %}
+                <p class="agotado">Producto agotado</p>
+            {% endif %}
+            <p><strong>Especificaciones técnicas: </strong>{{ producto.especificaciones_tecnicas }}</p>
+            <a href="{% url 'agregar_al_carrito' producto.id %}" class="boton-agregar">Agregar al carrito</a>
+
+        </div>
+        
+        
+        
+        
+        
+        
+        {% endfor %}
+    </div>
+    
 </body>
 </html>
-

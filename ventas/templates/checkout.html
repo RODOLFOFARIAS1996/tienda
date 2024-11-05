@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Contenedor principal */
+        .checkout-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        /* Resumen de productos */
+        .checkout-items, .checkout-resumen {
+            margin-bottom: 20px;
+        }
+
+        .checkout-items h3, .checkout-resumen h3 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+            color: #555;
+        }
+
+        .checkout-items ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checkout-items li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checkout-items strong {
+            color: #333;
+        }
+
+        /* Resumen de costos */
+        .checkout-resumen p {
+            margin: 5px 0;
+        }
+
+        .checkout-resumen h4 {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        /* MercadoPago Brick Container */
+        #cardPaymentBrick_container {
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .footer-note {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+       
+        <!-- Resumen de productos en el carrito -->
+        <div class="checkout-items">
+            <h3>Resumen de tus productos</h3>
+            <ul>
+                {% for item_data in items %}
+                    <li>
+                        <strong>{{ item_data.item.producto.titulo }}</strong><br>
+                        Cantidad: {{ item_data.item.cantidad }}<br>
+                        Precio Unitario: ${{ item_data.item.producto.costo }}<br>
+                        Total: ${{ item_data.item_total }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Resumen de costos -->
+        <div class="checkout-resumen">
+            <h3>Resumen de la compra</h3>
+            <p>Subtotal: ${{ subtotal }}</p>
+            <p>Envío: ${{ envio }}</p>
+            <p>Descuento: ${{ descuento }}</p>
+            <h4>Total: ${{ total }}</h4>
+        </div>
+
+        <!-- Formulario de datos del cliente -->
+        <div class="customer-form">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" placeholder="Ingresa tu nombre" required />
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" placeholder="Ingresa tu dirección" required />
+
+            <label for="emailInput">Email:</label>
+            <input type="email" id="emailInput" placeholder="Ingresa tu email" required />
+        </div>
+
+        <!-- Contenedor del formulario de Mercado Pago -->
+        <div id="payment-data" data-total="{{ total|floatformat:2 }}"></div>
+        <div id="cardPaymentBrick_container"></div>
+    </div>
+
+    <script>
+        const mp = new MercadoPago('{{ public_key }}', {
+            locale: 'es-MX'
+        });
+
+        const bricksBuilder = mp.bricks();
+        const totalAmount = parseFloat(document.getElementById('payment-data').getAttribute('data-total'));
+
+        const renderCardPaymentBrick = async (bricksBuilder) => {
+            const settings = {
+                initialization: {
+                    amount: totalAmount,
+                    payer: {
+                        email: document.getElementById('emailInput').value,
+                    },
+                },
+                customization: {
+                    visual: {
+                        style: {
+                            customVariables: {}
+                        }
+                    },
+                    paymentMethods: {
+                        maxInstallments: 1,
+                    }
+                },
+                callbacks: {
+                    onReady: () => {
+                        console.log("Brick de pago listo");
+                    },
+                    onSubmit: (cardFormData) => {
+                        // Redirige inmediatamente al hacer clic en el botón de pago
+                        window.location.href = "{% url 'productos' %}";
+                        console.log('Datos del formulario de tarjeta:', cardFormData);
+                        return new Promise((resolve, reject) => {
+                            fetch("{% url 'procesar_pago' %}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": "{{ csrf_token }}"
+                                },
+                                body: JSON.stringify(cardFormData)
+                            })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.status === 'approved') {
+                                    console.log('Pago aprobado');
+                                    resolve();
+                                } else {
+                                    console.error('Pago fallido:', data);
+                                    reject();
+                                }
+                            })
+                            .catch((error) => {
+                                console.error('Error en la solicitud:', error);
+                                reject();
+                            });
+                        });
+                    },
+                    onError: (error) => {
+                        console.error("Error en Brick de pago:", error);
+                    },
+                },
+            };
+            window.cardPaymentBrickController = await bricksBuilder.create('cardPayment', 'cardPaymentBrick_container', settings);
+        };
+        renderCardPaymentBrick(bricksBuilder);
+    </script>
+
+    
+</body>
+</html>

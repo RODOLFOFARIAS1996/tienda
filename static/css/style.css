@@ -1,0 +1,308 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Hace que el menú sea sticky y permanezca en la parte superior de la página */
+/* Estilos para el menú */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(110, 109, 109, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .logo img {
+    height: 40px;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin-right: 20px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    border: 2px solid rgb(210, 210, 210);
+    border-radius: 5px;
+}
+
+.menu li a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.iconos {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.iconos a {
+    color: black;
+    margin-left: 20px;
+    font-size: 24px;
+    position: relative;
+}
+
+.iconos a:hover {
+    color: #007bff;
+}
+
+.cart-icon {
+    position: relative; /* Ensure the cart icon itself is relatively positioned */
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px; /* Adjust to fine-tune the position above the cart */
+    right: -10px; /* Adjust to fine-tune the position to the right of the cart */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 7px;
+    font-size: 12px;
+    line-height: 1;
+    min-width: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.left {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.right {
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 40px;
+    border-radius: 8px;
+}
+
+.cartera-imagen {
+    width: 100%;
+    height: auto;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+.producto {
+    position: relative; /* El contenedor del producto es relativo para que la etiqueta pueda posicionarse dentro */
+    width: 300px;
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 8px;
+}
+
+
+
+.producto-imagen {
+    width: 100%;
+    height: auto;
+}
+.producto-imagen-contenedor {
+    position: relative; /* Contenedor relativo para la etiqueta */
+    width: 100%;
+}
+h2 {
+    text-align: center;
+}
+
+h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.boton-agregar {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.boton-agregar:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la página del carrito */
+.container-carrito {
+    width: 80%;
+    margin: 80px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.carrito-items ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.carrito-items li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carrito-items a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.carrito-items a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+.boton-actualizar {
+    background-color: #28a745; /* Verde para indicar actualización */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.boton-actualizar:hover {
+    background-color: #218838; /* Color al pasar el cursor */
+}
+.cantidad-input {
+    width: 60px; /* Ajusta el ancho según prefieras */
+    text-align: center;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+}
+.cantidad-contenedor {
+    display: flex;
+    align-items: center;
+}
+.seguir-comprando {
+    width: 200px; /* Ajusta el ancho según prefieras */
+    margin: 20px auto; /* Centra el botón horizontalmente */
+    display: block; /* Hace que el margen automático funcione */
+    background-color: #007bff; /* Color de fondo */
+    color: white; /* Color de texto */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.seguir-comprando:hover {
+    background-color: #0056b3;
+}
+.etiqueta {
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    position: absolute; /* Colocamos la etiqueta en posición absoluta dentro del contenedor */
+    top: 10px; /* La movemos 10px desde la parte superior del contenedor */
+    left: 10px; /* La movemos 10px desde la parte izquierda del contenedor */
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 10; /* Aseguramos que esté por encima de la imagen */
+}
+
+
+
+
+.etiqueta::before, .etiqueta::after {
+    content: '';  /* Añade comillas antes y después del contenido */
+    color: white;
+}
+.checkout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.checkout-button:hover {
+    background-color: #45a049;
+}
+
+
+
+

@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -63,10 +65,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ventas.context_processors.carrito_total_items',  # Agregar esto
+                 'ventas.context_processors.carrito_total_items', 
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'tienda.wsgi.application'
 
@@ -101,6 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Configuración para los archivos media (subidas de usuarios como imágenes)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -116,9 +126,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Asegúrate de que esta línea esté apuntando a la carpeta donde está tu CSS
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+MERCADO_PAGO_PUBLIC_KEY = 'TEST-ca0e3405-c992-4fec-aee5-b2bf4371c83a'
+MERCADO_PAGO_ACCESS_TOKEN = 'TEST-8124039507377746-110420-d8cfb68b29c479c01a924f86a2c790a2-581275718'
